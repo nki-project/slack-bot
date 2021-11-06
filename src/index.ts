@@ -1,6 +1,6 @@
 import {RegisterCommand} from "./controllers/RegisterCommand";
 import {TypeMessage} from "./constants/enums";
-import {Command} from "./models/Command";
+import {Command} from "./controllers/Command";
 import {CommandController} from "./controllers/CommandController";
 const SlackBot = require('slackbots');
 require('dotenv').config();

@@ -1,11 +1,11 @@
 import {CommandProperty} from "../interfaces/interface";
 
-export class Command {
+export abstract class Command {
     name: string
     propertiesForCommand = Array<String>();
     properties: CommandProperty = {};
 
-    constructor(name: string, properties: Array<String> = []) {
+    protected constructor(name: string, properties: Array<String> = []) {
         this.name = name;
         this.propertiesForCommand = properties;
     }
@@ -16,7 +16,5 @@ export class Command {
         }
     }
 
-    run() : any {
-
-    }
+    abstract run(): any;
 }
