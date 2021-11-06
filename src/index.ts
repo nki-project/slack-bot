@@ -12,7 +12,7 @@ const dispatcher: RegisterCommand = new RegisterCommand();
 dispatcher.register(new CommandController("!create",["name"]));
 
 bot.on("message",(data: any) => {
-    if(data.type == TypeMessage.message && !data['bot_id']) {
+    if(data.type == TypeMessage.MESSAGE && !data['bot_id']) {
         try {
             if((data.text as string).startsWith("!")) {
                 const splitCommand = data.text.split(' ');

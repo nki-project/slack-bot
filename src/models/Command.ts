@@ -3,12 +3,11 @@ import {CommandProperty} from "../interfaces/interface";
 export class Command {
     name: string
     propertiesForCommand = Array<String>();
-    properties: CommandProperty
+    properties: CommandProperty = {};
 
     constructor(name: string, properties: Array<String> = []) {
         this.name = name;
         this.propertiesForCommand = properties;
-        this.properties = {};
     }
 
     initProperties(properties: Array<string>) {
