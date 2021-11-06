@@ -1,6 +1,7 @@
 import {RegisterCommand} from "./controllers/RegisterCommand";
-import {showHello} from "./controllers/LogicController";
 import {TypeMessage} from "./constants/enums";
+import {Command} from "./models/Command";
+import {CommandController} from "./controllers/CommandController";
 const SlackBot = require('slackbots');
 require('dotenv').config();
 
@@ -8,18 +9,28 @@ const bot  = new SlackBot({token: process.env.TOKEN_BOT,name:process.env.NAME_BO
 
 const dispatcher: RegisterCommand = new RegisterCommand();
 
-dispatcher.register("!create",showHello);
+dispatcher.register(new CommandController("!create",["name"]));
 
 bot.on("message",(data: any) => {
     if(data.type == TypeMessage.message && !data['bot_id']) {
         try {
-            const splitCommands = data.text.split(' ');
-            dispatcher.processCommand(splitCommands[0],splitCommands.length == 1?"":splitCommands[1]);
+            if((data.text as string).startsWith("!")) {
+                const splitCommand = data.text.split(' ');
+                const command : Command = dispatcher.validateRegisterCommand(splitCommand[0],splitCommand.length - 1);
+                command.initProperties(splitCommand.slice(1,splitCommand.length));
+                const result = dispatcher.processCommand(command);
+                bot.postMessageToChannel(process.env.CHANNEL_BOT,JSON.stringify(result),() => {
+                    console.log('Logger send!')
+                })
+            }
         }
         catch(e: any)  {
             bot.postMessageToChannel(process.env.CHANNEL_BOT,e.message.toString(),() => {
-                console.log('error found!');
+                console.log('Error found!');
             })
         }
     }
+})
+bot.on("error",(data: any) => {
+
 })

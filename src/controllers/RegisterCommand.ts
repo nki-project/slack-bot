@@ -1,19 +1,30 @@
+import {Command} from "../models/Command";
+
 export class RegisterCommand {
 
-    private commandsCallback: Map<any,any> = new Map();
+    private commands: Array<Command> = new Array<Command>();
 
 
-    register(command: string,callback: Function) {
-        this.commandsCallback.set(command,callback);
+    register(command: Command) {
+       this.commands.push(command);
     }
 
     //command => Function
 
-    processCommand(command: string,args: string = "") {
-        if(this.commandsCallback.has(command)) {
-            this.commandsCallback.get(command)(args);
-            return;
-        }
-        throw new Error("Command not found!");
+    processCommand(command: Command)  {
+        return command.run();
+    }
+
+    validateRegisterCommand(name: string,countArgs: number) : Command {
+       let commandSearch = null;
+       for(let command of this.commands) {
+           if(command.name === name) {
+               commandSearch = command;
+               break;
+           }
+       }
+       if(!commandSearch) throw new Error("Command not found!");
+       if(countArgs!==commandSearch.propertiesForCommand.length) throw new Error("Invalid count args!");
+       return commandSearch;
     }
 }
