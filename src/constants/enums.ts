@@ -1,3 +1,3 @@
 export enum TypeMessage {
-    message = "message"
+    MESSAGE = "message"
 }
