@@ -24,7 +24,7 @@ export class RegisterCommand {
            }
        }
        if(!commandSearch) throw new Error("Command not found!");
-       if(countArgs!==commandSearch.countArgs) throw new Error("Invalid count args!");
+       if(countArgs!==commandSearch.propertiesForCommand.length) throw new Error("Invalid count args!");
        return commandSearch;
     }
 }

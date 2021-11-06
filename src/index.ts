@@ -9,7 +9,7 @@ const bot  = new SlackBot({token: process.env.TOKEN_BOT,name:process.env.NAME_BO
 
 const dispatcher: RegisterCommand = new RegisterCommand();
 
-dispatcher.register(new CommandController("!create",1,["name"]));
+dispatcher.register(new CommandController("!create",["name"]));
 
 bot.on("message",(data: any) => {
     if(data.type == TypeMessage.message && !data['bot_id']) {
@@ -30,4 +30,7 @@ bot.on("message",(data: any) => {
             })
         }
     }
+})
+bot.on("error",(data: any) => {
+
 })

@@ -2,19 +2,12 @@ import {CommandProperty} from "../interfaces/interface";
 
 export class Command {
     name: string
-    countArgs: number
     propertiesForCommand = Array<String>();
     properties: CommandProperty
 
-    constructor(name: string, countArgs: number, properties: Array<String> = []) {
+    constructor(name: string, properties: Array<String> = []) {
         this.name = name;
-        this.countArgs = countArgs;
         this.propertiesForCommand = properties;
-
-        if(this.countArgs!==this.propertiesForCommand.length) {
-            throw new Error("CountArgs === propertiesForCommand");
-        }
-
         this.properties = {};
     }
 
