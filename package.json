@@ -19,7 +19,7 @@
   "scripts": {
     "prepare": "tsc",
     "build": "tsc",
-    "start": "ts-node src/index.ts"
+    "start": "ts-node src/app.ts"
   },
   "keywords": [],
   "author": "",
