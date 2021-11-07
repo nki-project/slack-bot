@@ -29,6 +29,7 @@ export class MainController {
                     }
                 }
                 catch(e: any)  {
+                    console.log(e.message.toString());
                     this.bot.postMessageToChannel(channel.name,e.message.toString(),() => {
                         console.log('Error found!');
                     })
@@ -46,6 +47,7 @@ export class MainController {
            database:"./db.sqlite",
            entities:[Task],
            logging:true,
+           name:"default",
            synchronize:true
        }
        this.connection = await createConnection(options);
