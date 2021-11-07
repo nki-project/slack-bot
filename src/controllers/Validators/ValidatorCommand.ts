@@ -1,4 +1,4 @@
-import {Command} from "./Command";
+import {Command} from "../Command";
 
 
 export class ValidatorCommand {
@@ -12,7 +12,7 @@ export class ValidatorCommand {
         if(properties.length!==commandSearch.countArgs) throw new Error("Invalid count args!");
 
         for (let indexType = 0; indexType<commandSearch.typeArgs.length; indexType++) {
-            if(commandSearch.typeArgs[indexType] == 'number' && Number(properties[indexType])) {
+            if(commandSearch.typeArgs[indexType] == 'number' && (Number(properties[indexType]) || Number(properties[indexType]) === 0) ) {
                 continue;
             }else if(commandSearch.typeArgs[indexType] == 'date' && new Date(properties[indexType]).toString() !== 'Invalid Date') {
                 continue;

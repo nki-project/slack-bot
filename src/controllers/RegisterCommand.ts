@@ -11,7 +11,7 @@ export class RegisterCommand {
 
     //command => Function
 
-    processCommand(command: Command)  {
-        return command.run();
+    processCommand(command: Command,data: any)  {
+        return command.run(data);
     }
 }

@@ -1,4 +1,7 @@
+import {Connection, getConnection} from "typeorm";
+
 export abstract class Command {
+    connection: Connection = getConnection("default");
     name: string;
     countArgs: number;
     typeArgs: Array<string>;
@@ -9,7 +12,7 @@ export abstract class Command {
         this.typeArgs = typeArgs;
     }
 
-    abstract run(): any;
+    abstract run(data: any): any;
 
     abstract initProperties(args: []) : any
 }
