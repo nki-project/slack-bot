@@ -20,6 +20,12 @@ export class Task {
     @Column({nullable:false,default:false})
     isStopped: boolean
 
+    @Column({nullable:true})
+    startedAt: Date
+
+    @Column({nullable:true})
+    stoppedAt: Date
+
     @CreateDateColumn()
     createdAt: Date
 }
