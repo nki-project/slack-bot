@@ -11,7 +11,7 @@ const dispatcher: RegisterCommand = new RegisterCommand();
 
 const main : MainController = new MainController();
 
-dispatcher.register(new CreateTaskController("!create",1))
+dispatcher.register(new CreateTaskController("!create",2, ['string', 'number']))
 
 main.initBotDispatcher(bot,dispatcher)
 

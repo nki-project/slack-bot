@@ -6,10 +6,10 @@ export class CreateTaskController extends Command {
 
     private connection: Connection = getConnection("default");
 
-    private task?: Task
+    public task: Task|null = null
 
-    constructor(name: string,countArgs: number) {
-        super(name,countArgs);
+    constructor(name: string, countArgs: number, typeArgs: Array<string>) {
+        super(name, countArgs, typeArgs);
     }
 
     async run()  {
@@ -19,5 +19,6 @@ export class CreateTaskController extends Command {
     initProperties(value: Array<string>) {
         this.task = new Task();
         this.task.title = value[0];
+        return this;
     }
 }

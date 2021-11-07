@@ -1,7 +1,7 @@
 import {TypeMessage} from "../constants/enums";
-import {Command} from "./Command";
-import {Connection, ConnectionOptions, createConnection, getRepository} from "typeorm";
+import {Connection, ConnectionOptions, createConnection} from "typeorm";
 import {Task} from "../entities/Task";
+import {ValidatorCommand} from "./ValidatorCommand";
 
 export class MainController {
 
@@ -19,13 +19,12 @@ export class MainController {
                 const channel = await this.bot.getChannelById(data.channel);
                 try {
                     if((data.text as string).startsWith("!")) {
-                        const splitCommand = data.text.split(' ');
-                        const command : Command = this.dispatcher.validateRegisterCommand(splitCommand[0],splitCommand.length - 1);
-                        command.initProperties(splitCommand.slice(1,splitCommand.length));
+                        const command = ValidatorCommand.validate(this.dispatcher.commands, data.text);
                         const result = await this.dispatcher.processCommand(command);
                         this.bot.postMessageToChannel(channel.name,JSON.stringify(result),() => {
                             console.log('Logger send!')
                         })
+
                     }
                 }
                 catch(e: any)  {
