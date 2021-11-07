@@ -18,7 +18,7 @@ export class RegisterCommand {
     validateRegisterCommand(name: string,countArgs: number) : Command {
        const [commandSearch] = this.commands.filter(command => command.name === name);
        if(!commandSearch) throw new Error("Command not found!");
-       if(countArgs!==commandSearch.propertiesForCommand.length) throw new Error("Invalid count args!");
+       if(countArgs!==commandSearch.countArgs) throw new Error("Invalid count args!");
        return commandSearch;
     }
 }
