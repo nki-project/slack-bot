@@ -1,13 +1,16 @@
 import {TypeMessage} from "../constants/enums";
 import {Command} from "./Command";
+import {Connection, ConnectionOptions, createConnection, getRepository} from "typeorm";
+import {Task} from "../entities/Task";
 
 export class MainController {
-    private readonly bot: any
-    private readonly dispatcher : any
 
-    constructor(bot:any,dispatcher: any) {
-        this.bot = bot;
-        this.dispatcher = dispatcher;
+    private bot: any
+    private dispatcher : any
+    private connection?: Connection
+
+    constructor() {
+        this.initDatabase();
     }
 
     start() {
@@ -19,7 +22,7 @@ export class MainController {
                         const splitCommand = data.text.split(' ');
                         const command : Command = this.dispatcher.validateRegisterCommand(splitCommand[0],splitCommand.length - 1);
                         command.initProperties(splitCommand.slice(1,splitCommand.length));
-                        const result = this.dispatcher.processCommand(command);
+                        const result = await this.dispatcher.processCommand(command);
                         this.bot.postMessageToChannel(channel.name,JSON.stringify(result),() => {
                             console.log('Logger send!')
                         })
@@ -35,5 +38,21 @@ export class MainController {
         this.bot.on("error",(data: any) => {
             console.log(data);
         })
+    }
+
+    async initDatabase() {
+       const options: ConnectionOptions = {
+           type:"sqlite",
+           database:"./db.sqlite",
+           entities:[Task],
+           logging:true,
+           synchronize:true
+       }
+       this.connection = await createConnection(options);
+    }
+
+    initBotDispatcher(bot: any,dispatcher: any) {
+        this.bot = bot;
+        this.dispatcher = dispatcher;
     }
 }
