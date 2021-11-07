@@ -13,7 +13,7 @@ export class CreateTaskController extends Command {
     }
 
     async run()  {
-       return await this.connection.getRepository(Task).save(Task as Task);
+       return await this.connection.getRepository(Task).save(this.task as Task);
     }
 
     initProperties(value: Array<string>) {
