@@ -8,6 +8,7 @@ export class ValidatorCommand {
         const [nameCommand, ...properties] = splitData;
         const [commandSearch] = commands.filter(command => command.name === nameCommand);
         if(!commandSearch) throw new Error("Command not found!");
+
         if(properties.length!==commandSearch.countArgs) throw new Error("Invalid count args!");
 
         for (let indexType = 0; indexType<commandSearch.typeArgs.length; indexType++) {
@@ -18,9 +19,8 @@ export class ValidatorCommand {
             }
             else if(commandSearch.typeArgs[indexType] == 'string' && String(properties[indexType])) {
                 continue;
-            }else {
-                throw new Error("Invalid type args!");
             }
+            throw new Error("Invalid type args!");
         }
 
         return commandSearch.initProperties(properties);
