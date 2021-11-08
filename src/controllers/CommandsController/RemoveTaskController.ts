@@ -24,7 +24,7 @@ export class RemoveTaskController extends Command {
             bot.postMessageToUser(userSearch.name,`Task with name ${this.id} not found!`);
             return;
         }
-        await this.connection.getRepository(Task).delete(this.id);
+        await this.connection.getRepository(Task).delete(searchTask.id);
         bot.postMessageToUser(userSearch.name,`Task with name ${this.id} successfully removed!`);
     }
 
