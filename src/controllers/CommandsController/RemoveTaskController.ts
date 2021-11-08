@@ -4,14 +4,14 @@ import {Task} from "../../entities/Task";
 
 export class RemoveTaskController extends Command {
 
-    private id: number
+    private id: string
 
     constructor(name: string, countArgs: number, typeArgs: Array<string>) {
         super(name, countArgs, typeArgs);
     }
 
     initProperties(args: Array<String>): any {
-        this.id = +args[0];
+        this.id = args[0].toString();
         return this;
     }
 
