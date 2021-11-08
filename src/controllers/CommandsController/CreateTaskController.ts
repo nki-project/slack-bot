@@ -1,6 +1,5 @@
 import {Command} from "../Command";
 import {Task} from "../../entities/Task";
-import {bot} from "../../config/bot";
 
 export class CreateTaskController extends Command {
 
@@ -18,18 +17,18 @@ export class CreateTaskController extends Command {
 
        const task : Task = await this.connection.getRepository(Task).findOne({where:{title:this.task.title,userId:data.user}});
 
-       const users = await bot.getUsers();
+       const users = await this.bot.getUsers();
 
        const userSearch = users.members.find((v: any) => v.id == data.user);
 
        if(task) {
-           await bot.postMessageToUser(userSearch.name,`Task with name ${this.task.title} already created!`);
+           await this.bot.postMessageToUser(userSearch.name,`Task with name ${this.task.title} already created!`);
            return;
        }
 
        await this.connection.getRepository(Task).save(this.task as Task);
 
-       await bot.postMessageToUser(userSearch.name,`Task ${this.task.title} successfully created!`);
+       await this.bot.postMessageToUser(userSearch.name,`Task ${this.task.title} successfully created!`);
     }
 
     initProperties(value: Array<string>) {
