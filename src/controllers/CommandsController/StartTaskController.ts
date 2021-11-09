@@ -1,5 +1,6 @@
 import {Command} from "../Command";
 import {Task} from "../../entities/Task";
+import {TaskStates} from "../../entities/TaskStates";
 
 export class StartTaskController extends Command {
 
@@ -23,20 +24,39 @@ export class StartTaskController extends Command {
         });
         const users = await this.bot.getUsers();
         const userSearch = users.members.find((v: any) => v.id == data.user);
+
         if(!task) {
             this.bot.postMessageToUser(userSearch.name,`Task with name ${this.id} not found!`);
             return;
         }
-        if(task.isStopped) {
-            this.bot.postMessageToUser(userSearch.name,`Please unpause the task ${this.id}`);
-        }
-        else if(task.isStarted) {
+
+        if(task.isStarted && !task.isStopped) {//если задача началась, но не остановлена
             this.bot.postMessageToUser(userSearch.name,`Task with name ${this.id} already started!`);
             return;
         }
-        task.startedAt = new Date();
-        task.isStarted = true;
+
+        if(task.isStarted && task.isStopped) { //если задача началась и остановлена
+            task.isStopped = false;
+            let taskRepeatStarted = new TaskStates();
+            taskRepeatStarted.startedAt = new Date();
+            await this.connection.getRepository(TaskStates).save({task:{id:task.id},...taskRepeatStarted});
+            await this.connection.getRepository(Task).save(task);
+            this.bot.postMessageToUser(userSearch.name,`Task with name ${this.id} successfully started!`);
+            return;
+        }
+
+        task.isStarted = true;//стартуем задачу
+
+        task.isStopped = false;//останавливаем задачу
+
         await this.connection.getRepository(Task).save(task);
+
+        let taskState = new TaskStates();
+
+        taskState.startedAt = new Date();
+
+        await this.connection.getRepository(TaskStates).save({task:{id:task.id},...taskState})
+
         this.bot.postMessageToUser(userSearch.name,`Task with name ${this.id} successfully started!`);
     }
 

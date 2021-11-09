@@ -1,4 +1,5 @@
-import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {TaskStates} from "./TaskStates";
 
 @Entity()
 export class Task {
@@ -20,12 +21,9 @@ export class Task {
     @Column({nullable:false,default:false})
     isStopped: boolean
 
-    @Column({nullable:true})
-    startedAt: Date
-
-    @Column({nullable:true})
-    stoppedAt: Date
-
     @CreateDateColumn()
     createdAt: Date
+
+    @OneToMany(() => TaskStates, taskState => taskState.task)
+    taskStates : Task[]
 }
