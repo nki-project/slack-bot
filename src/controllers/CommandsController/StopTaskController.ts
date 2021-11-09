@@ -1,5 +1,7 @@
 import {Command} from "../Command";
 import {Task} from "../../entities/Task";
+import {TaskStates} from "../../entities/TaskStates";
+import {getManager} from "typeorm";
 
 export class StopTaskController extends Command {
 
@@ -16,7 +18,7 @@ export class StopTaskController extends Command {
 
     async run(data: any) {
         const task: Task = await this.connection.getRepository(Task)
-            .findOne({where: {userId: data.user, title: data.userId}});
+            .findOne({where: {userId: data.user, title: this.id}});
         const users = await this.bot.getUsers();
         const userSearch = users.members.find((v: any) => v.id == data.user);
         if (!task) {
@@ -25,13 +27,27 @@ export class StopTaskController extends Command {
         }
         if (!task.isStarted) {
             this.bot.postMessageToUser(userSearch.name, `Task with name ${this.id} has not started yet`);
+            return;
         } else if (task.isStopped) {
             this.bot.postMessageToUser(userSearch.name, `Task with name ${this.id} already stopped!`);
             return;
         }
-        task.stoppedAt = new Date();
+
         task.isStopped = true;
         await this.connection.getRepository(Task).save(task);
+
+        //TODO найти последнюю задачу и поставить последнее время остановки
+
+        const result = await getManager().query("SELECT MAX(id) FROM task_states where taskId = ?",[task.id]);
+
+
+        const taskUpdate: TaskStates = await this.connection.getRepository(TaskStates)
+            .findOne({where:{id:result[0]['MAX(id)'],task:task.id}});
+
+        taskUpdate.stoppedAt = new Date();
+
+        await this.connection.getRepository(TaskStates).save(taskUpdate);
+
         this.bot.postMessageToUser(userSearch.name,`Task with name ${this.id} successfully stopped!`);
     }
 }

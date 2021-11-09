@@ -2,6 +2,7 @@ import {TypeMessage} from "../constants/enums";
 import {Connection, ConnectionOptions, createConnection} from "typeorm";
 import {Task} from "../entities/Task";
 import {ValidatorCommand} from "./Validators/ValidatorCommand";
+import {TaskStates} from "../entities/TaskStates";
 
 export class MainController {
 
@@ -40,7 +41,7 @@ export class MainController {
        const options: ConnectionOptions = {
            type:"sqlite",
            database:"./db.sqlite",
-           entities:[Task],
+           entities:[Task,TaskStates],
            logging:true,
            name:"default",
            synchronize:true

@@ -1,5 +1,6 @@
 import {Command} from "../Command";
 import {Task} from "../../entities/Task";
+import {TaskStates} from "../../entities/TaskStates";
 
 
 export class RemoveTaskController extends Command {
@@ -23,6 +24,11 @@ export class RemoveTaskController extends Command {
             this.bot.postMessageToUser(userSearch.name,`Task with name ${this.id} not found!`);
             return;
         }
+        await this.connection.createQueryBuilder()
+            .delete()
+            .from(TaskStates)
+            .where("taskId = :id", {id: searchTask.id}).execute();
+
         await this.connection.getRepository(Task).delete(searchTask.id);
         this.bot.postMessageToUser(userSearch.name,`Task with name ${this.id} successfully removed!`);
     }
