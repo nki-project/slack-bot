@@ -1,5 +1,6 @@
 import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Task} from "./Task";
+import DateTime from "../model/DateTime";
 
 @Entity()
 export class TaskStates {
@@ -11,8 +12,8 @@ export class TaskStates {
     task: Task
 
     @Column()
-    startedAt: Date
+    startedAt: string
 
     @Column({nullable:true})
-    stoppedAt: Date
+    stoppedAt: string
 }

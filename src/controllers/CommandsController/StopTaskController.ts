@@ -2,6 +2,7 @@ import {Command} from "../Command";
 import {Task} from "../../entities/Task";
 import {TaskStates} from "../../entities/TaskStates";
 import {getManager} from "typeorm";
+import DateTime from "../../model/DateTime";
 
 export class StopTaskController extends Command {
 
@@ -43,8 +44,7 @@ export class StopTaskController extends Command {
 
         const taskUpdate: TaskStates = await this.connection.getRepository(TaskStates)
             .findOne({where:{id:result[0]['MAX(id)'],task:task.id}});
-
-        taskUpdate.stoppedAt = new Date();
+        taskUpdate.stoppedAt = new DateTime().toString();
 
         await this.connection.getRepository(TaskStates).save(taskUpdate);
 
