@@ -1,6 +1,8 @@
 import {Command} from "../Command";
 import {Task} from "../../entities/Task";
 import {TaskStates} from "../../entities/TaskStates";
+import moment from 'moment-timezone'
+import DateTime from "../../model/DateTime";
 
 export class StartTaskController extends Command {
 
@@ -38,7 +40,7 @@ export class StartTaskController extends Command {
         if(task.isStarted && task.isStopped) { //если задача началась и остановлена
             task.isStopped = false;
             let taskRepeatStarted = new TaskStates();
-            taskRepeatStarted.startedAt = new Date();
+            taskRepeatStarted.startedAt = new DateTime().toString();
             await this.connection.getRepository(TaskStates).save({task:{id:task.id},...taskRepeatStarted});
             await this.connection.getRepository(Task).save(task);
             this.bot.postMessageToUser(userSearch.name,`Task with name ${this.id} successfully started!`);
@@ -53,7 +55,7 @@ export class StartTaskController extends Command {
 
         let taskState = new TaskStates();
 
-        taskState.startedAt = new Date();
+        taskState.startedAt = new DateTime().toString();
 
         await this.connection.getRepository(TaskStates).save({task:{id:task.id},...taskState})
 

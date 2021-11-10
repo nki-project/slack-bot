@@ -6,6 +6,7 @@
   "dependencies": {
     "create-typescript-project": "^0.8.0",
     "dotenv": "^10.0.0",
+    "moment-timezone": "^0.5.34",
     "slackbots": "^1.2.0",
     "sqlite3": "^5.0.2",
     "typeorm": "^0.2.38"
