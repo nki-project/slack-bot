@@ -4,6 +4,7 @@ import {Task} from "../entities/Task";
 import {ValidatorCommand} from "./Validators/ValidatorCommand";
 import {TaskStates} from "../entities/TaskStates";
 import {log} from "../config/logger";
+import {LiveQuotesController} from "./CustomsController/LiveQuotesController";
 
 export class MainController {
 
