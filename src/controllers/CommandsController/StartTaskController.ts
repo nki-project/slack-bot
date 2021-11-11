@@ -1,7 +1,6 @@
 import {Command} from "../Command";
 import {Task} from "../../entities/Task";
 import {TaskStates} from "../../entities/TaskStates";
-import moment from 'moment-timezone'
 import DateTime from "../../model/DateTime";
 
 export class StartTaskController extends Command {
