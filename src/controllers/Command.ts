@@ -1,5 +1,6 @@
 import {Connection, getConnection} from "typeorm";
 import {bot} from "../config/bot";
+import {log} from "../config/logger";
 
 export abstract class Command {
     connection: Connection = getConnection("default");
@@ -12,6 +13,7 @@ export abstract class Command {
         this.name = name;
         this.countArgs = countArgs;
         this.typeArgs = typeArgs;
+        log.info(`Register command ${this.name}`);
     }
 
     abstract run(data: any): any;
