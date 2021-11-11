@@ -1,4 +1,5 @@
 import {Command} from "./Command";
+import {log} from "../config/logger";
 
 export class RegisterCommand {
 
@@ -12,6 +13,11 @@ export class RegisterCommand {
     //command => Function
 
     processCommand(command: Command,data: any)  {
-        return command.run(data);
+        try {
+            return command.run(data);
+        }
+        catch(e : any) {
+            log.error(e.message.toString());
+        }
     }
 }

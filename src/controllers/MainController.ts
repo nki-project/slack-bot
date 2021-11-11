@@ -3,6 +3,7 @@ import {Connection, ConnectionOptions, createConnection} from "typeorm";
 import {Task} from "../entities/Task";
 import {ValidatorCommand} from "./Validators/ValidatorCommand";
 import {TaskStates} from "../entities/TaskStates";
+import {log} from "../config/logger";
 
 export class MainController {
 
@@ -11,6 +12,7 @@ export class MainController {
     private connection?: Connection
 
     constructor() {
+        log.info("Init database");
         this.initDatabase();
     }
 
@@ -21,19 +23,18 @@ export class MainController {
                 try {
                     if((data.text as string).startsWith("!")) {
                         const command = ValidatorCommand.validate(this.dispatcher.commands, data.text);
-                        const result = await this.dispatcher.processCommand(command,data);
+                        await this.dispatcher.processCommand(command,data);
                     }
                 }
                 catch(e: any)  {
-                    console.log(e.message.toString());
                     this.bot.postMessageToChannel(channel.name,e.message.toString(),() => {
-                        console.log('Error found!');
+                        log.error(e.message.toString());
                     })
                 }
             }
         })
         this.bot.on("error",(data: any) => {
-            console.log(data);
+            log.error(data.toString());
         })
     }
 

@@ -5,10 +5,17 @@ import {bot} from "./config/bot";
 import {RemoveTaskController} from "./controllers/CommandsController/RemoveTaskController";
 import {StartTaskController} from "./controllers/CommandsController/StartTaskController";
 import {StopTaskController} from "./controllers/CommandsController/StopTaskController";
+import {log} from "./config/logger";
+
+log.info("Init dispatcher!");
 
 const dispatcher: RegisterCommand = new RegisterCommand();
 
+log.info("Init main controller - main logic!");
+
 const main : MainController = new MainController();
+
+log.info("Register all commands!");
 
 dispatcher.register(new CreateTaskController("!create",1, ['string']));
 dispatcher.register(new RemoveTaskController("!del",1,['string']));
@@ -17,5 +24,7 @@ dispatcher.register(new StopTaskController("!stop",1,['string']));
 
 
 main.initBotDispatcher(bot,dispatcher)
+
+log.info("Start Server!");
 
 main.start();
