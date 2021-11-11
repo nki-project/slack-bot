@@ -7,6 +7,7 @@ import {StartTaskController} from "./controllers/CommandsController/StartTaskCon
 import {StopTaskController} from "./controllers/CommandsController/StopTaskController";
 import {StatusTaskController} from "./controllers/CommandsController/StatusTaskController";
 import {log} from "./config/logger";
+import {LiveQuotesController} from "./controllers/CustomsController/LiveQuotesController";
 
 log.info("Init dispatcher!");
 
@@ -23,6 +24,8 @@ dispatcher.register(new RemoveTaskController("!del",1,['string']));
 dispatcher.register(new StartTaskController("!start",1,['string']));
 dispatcher.register(new StopTaskController("!stop",1,['string']));
 dispatcher.register(new StatusTaskController("!status",1,['string']));
+
+LiveQuotesController.startCronJobForQuotes();
 
 main.initBotDispatcher(bot,dispatcher)
 
