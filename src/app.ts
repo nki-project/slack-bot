@@ -5,6 +5,7 @@ import {bot} from "./config/bot";
 import {RemoveTaskController} from "./controllers/CommandsController/RemoveTaskController";
 import {StartTaskController} from "./controllers/CommandsController/StartTaskController";
 import {StopTaskController} from "./controllers/CommandsController/StopTaskController";
+import {StatusTaskController} from "./controllers/CommandsController/StatusTaskController";
 
 const dispatcher: RegisterCommand = new RegisterCommand();
 
@@ -14,7 +15,7 @@ dispatcher.register(new CreateTaskController("!create",1, ['string']));
 dispatcher.register(new RemoveTaskController("!del",1,['string']));
 dispatcher.register(new StartTaskController("!start",1,['string']));
 dispatcher.register(new StopTaskController("!stop",1,['string']));
-
+dispatcher.register(new StatusTaskController("!status",1,['string']));
 
 main.initBotDispatcher(bot,dispatcher)
 
