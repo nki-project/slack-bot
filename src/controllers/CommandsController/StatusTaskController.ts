@@ -17,7 +17,7 @@ export class StatusTaskController extends Command {
     async run(data: any) {
         const task: Task = await this.connection.getRepository(Task).findOne({
             where: {
-                title: this.id, userId: data.userId
+                title: this.id, userId: data.user
             }
         });
         const users = await this.bot.getUsers();

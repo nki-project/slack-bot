@@ -5,6 +5,7 @@ import {ValidatorCommand} from "./Validators/ValidatorCommand";
 import {TaskStates} from "../entities/TaskStates";
 import {log} from "../config/logger";
 import {LiveQuotesController} from "./CustomsController/LiveQuotesController";
+import {Settings} from "../entities/Settings";
 
 export class MainController {
 
@@ -43,7 +44,7 @@ export class MainController {
        const options: ConnectionOptions = {
            type:"sqlite",
            database:"./db.sqlite",
-           entities:[Task,TaskStates],
+           entities:[Task,TaskStates,Settings],
            logging:true,
            name:"default",
            synchronize:true
