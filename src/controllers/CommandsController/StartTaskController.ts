@@ -23,16 +23,13 @@ export class StartTaskController extends Command {
                 title: this.id
             }
         });
-        const users = await this.bot.getUsers();
-        const userSearch = users.members.find((v: any) => v.id == data.user);
-
         if(!task) {
-            this.bot.postMessageToUser(userSearch.name,`Task with name ${this.id} not found!`);
+            this.bot.postMessageToUser(data["userFullInfo"].name,`Task with name ${this.id} not found!`);
             return;
         }
 
         if(task.isStarted && !task.isStopped) {//если задача началась, но не остановлена
-            this.bot.postMessageToUser(userSearch.name,`Task with name ${this.id} already started!`);
+            this.bot.postMessageToUser(data["userFullInfo"].name,`Task with name ${this.id} already started!`);
             return;
         }
 
@@ -42,7 +39,7 @@ export class StartTaskController extends Command {
             taskRepeatStarted.startedAt = new DateTime().toString();
             await this.connection.getRepository(TaskStates).save({task:{id:task.id},...taskRepeatStarted});
             await this.connection.getRepository(Task).save(task);
-            this.bot.postMessageToUser(userSearch.name,`Task with name ${this.id} successfully started!`);
+            this.bot.postMessageToUser(data["userFullInfo"].name,`Task with name ${this.id} successfully started!`);
             return;
         }
 
@@ -58,7 +55,7 @@ export class StartTaskController extends Command {
 
         await this.connection.getRepository(TaskStates).save({task:{id:task.id},...taskState})
 
-        this.bot.postMessageToUser(userSearch.name,`Task with name ${this.id} successfully started!`);
+        this.bot.postMessageToUser(data["userFullInfo"].name,`Task with name ${this.id} successfully started!`);
     }
 
 }

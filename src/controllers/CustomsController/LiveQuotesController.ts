@@ -41,16 +41,14 @@ export class LiveQuotesController extends Command {
                 user:data.user,
             }
         });
-        const users = await this.bot.getUsers();
-        const userSearch = users.members.find((v: any) => v.id == data.user);
         if(settings) {
             if(settings.enableQuotes) {
                 settings.enableQuotes = !settings.enableQuotes;
-                this.bot.postMessageToUser(userSearch.name,"Quotes disable!");
+                this.bot.postMessageToUser(data["userFullInfo"].name,"Quotes disable!");
             }
             else {
                 settings.enableQuotes = !settings.enableQuotes;
-                this.bot.postMessageToUser(userSearch.name, "Quotes enable!");
+                this.bot.postMessageToUser(data["userFullInfo"].name, "Quotes enable!");
             }
             await this.connection.getRepository(Settings).save(settings);
             return;
@@ -59,6 +57,6 @@ export class LiveQuotesController extends Command {
         settingsForUser.enableQuotes = true;
         settingsForUser.user = data.user;
         await this.connection.getRepository(Settings).save(settingsForUser);
-        this.bot.postMessageToUser(userSearch.name,"Quotes enable!");
+        this.bot.postMessageToUser(data["userFullInfo"].name,"Quotes enable!");
     }
 }

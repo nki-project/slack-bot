@@ -13,13 +13,11 @@ export class InfoController extends Command {
     }
 
     async run(data: any) {
-        const users = await this.bot.getUsers();
-        const userSearch = users.members.find((v: any) => v.id == data.user);
         const info = JSON.parse(fs.readFileSync(path.join(__dirname,"../../config/info.json"),{encoding:"utf-8"}));
         const formedData = [info["about"],"Команды:"];
         info["commands"].forEach((com: any) => {
             formedData.push(com.name + " - " + com.description);
         })
-        this.bot.postMessageToUser(userSearch.name,formedData.join("\n"));
+        this.bot.postMessageToUser(data["userFullInfo"].name,formedData.join("\n"));
     }
 }
