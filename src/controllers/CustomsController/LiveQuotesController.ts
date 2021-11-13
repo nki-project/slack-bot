@@ -11,7 +11,7 @@ export class LiveQuotesController extends Command {
     }
 
     async startCronJobForQuotes() {
-        schedule("*/3 * * * *",async () => {
+        schedule("*/30 * * * *",async () => {
             const users = await this.bot.getUsers();
             const response = await axios.get("https://api.forismatic.com/api/1.0/?method=getQuote&format=json");
             const data = response.data;
