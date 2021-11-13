@@ -21,7 +21,6 @@ export class MainController {
     start() {
         this.bot.on("message",async (data: any) => {
             if(data.type == TypeMessage.MESSAGE && !data['bot_id']) {
-                const channel = await this.bot.getChannelById(data.channel);
                 try {
                     if((data.text as string).startsWith("!")) {
                         const command = ValidatorCommand.validate(this.dispatcher.commands, data.text);
@@ -29,9 +28,11 @@ export class MainController {
                     }
                 }
                 catch(e: any)  {
-                    this.bot.postMessageToChannel(channel.name,e.message.toString(),() => {
+                    const users = await this.bot.getUsers();
+                    const userSearch = users.members.find((v: any) => v.id == data.user);
+                    this.bot.postMessageToUser(userSearch.name,e.message.toString(),() => {
                         log.error(e.message.toString());
-                    })
+                    });
                 }
             }
         })
