@@ -12,8 +12,9 @@ export class RegisterCommand {
 
     //command => Function
 
-    processCommand(command: Command,data: any)  {
+    processCommand(command: Command,data: any,userFullInfo: any)  {
         try {
+            data["userFullInfo"] = userFullInfo;
             return command.run(data);
         }
         catch(e : any) {

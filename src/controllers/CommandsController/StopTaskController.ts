@@ -20,17 +20,15 @@ export class StopTaskController extends Command {
     async run(data: any) {
         const task: Task = await this.connection.getRepository(Task)
             .findOne({where: {userId: data.user, title: this.id}});
-        const users = await this.bot.getUsers();
-        const userSearch = users.members.find((v: any) => v.id == data.user);
         if (!task) {
-            this.bot.postMessageToUser(userSearch.name, `Task with name ${this.id} not found!`);
+            this.bot.postMessageToUser(data["userFullInfo"].name, `Task with name ${this.id} not found!`);
             return;
         }
         if (!task.isStarted) {
-            this.bot.postMessageToUser(userSearch.name, `Task with name ${this.id} has not started yet`);
+            this.bot.postMessageToUser(data["userFullInfo"].name, `Task with name ${this.id} has not started yet`);
             return;
         } else if (task.isStopped) {
-            this.bot.postMessageToUser(userSearch.name, `Task with name ${this.id} already stopped!`);
+            this.bot.postMessageToUser(data["userFullInfo"].name, `Task with name ${this.id} already stopped!`);
             return;
         }
 
@@ -48,6 +46,6 @@ export class StopTaskController extends Command {
 
         await this.connection.getRepository(TaskStates).save(taskUpdate);
 
-        this.bot.postMessageToUser(userSearch.name,`Task with name ${this.id} successfully stopped!`);
+        this.bot.postMessageToUser(data["userFullInfo"].name,`Task with name ${this.id} successfully stopped!`);
     }
 }

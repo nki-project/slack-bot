@@ -20,22 +20,19 @@ export class StatusTaskController extends Command {
                 title: this.id, userId: data.user
             }
         });
-        const users = await this.bot.getUsers();
-        const userSearch = users.members.find((v: any) => v.id == data.user);
-
         if(!task) {
-            this.bot.postMessageToUser(userSearch.name,`Task with name ${this.id} not found!`);
+            this.bot.postMessageToUser(data["userFullInfo"].name,`Task with name ${this.id} not found!`);
             return;
         }
 
         if(!task.isStarted && !task.isStopped) {
-            this.bot.postMessageToUser(userSearch.name,`Status: Not started and not paused`);
+            this.bot.postMessageToUser(data["userFullInfo"].name,`Status: Not started and not paused`);
         }
         else if(task.isStarted && !task.isStopped) {
-            this.bot.postMessageToUser(userSearch.name,`Status: Task started!`);
+            this.bot.postMessageToUser(data["userFullInfo"].name,`Status: Task started!`);
             return;
         } else {
-            this.bot.postMessageToUser(userSearch.name,`Status: Task stopped!`);
+            this.bot.postMessageToUser(data["userFullInfo"].name,`Status: Task stopped!`);
         }
     }
 

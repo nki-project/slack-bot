@@ -21,15 +21,15 @@ export class MainController {
     start() {
         this.bot.on("message",async (data: any) => {
             if(data.type == TypeMessage.MESSAGE && !data['bot_id']) {
+                const users = await this.bot.getUsers();
+                const userSearch = users.members.find((v: any) => v.id == data.user);
                 try {
                     if((data.text as string).startsWith("!")) {
                         const command = ValidatorCommand.validate(this.dispatcher.commands, data.text);
-                        await this.dispatcher.processCommand(command,data);
+                        await this.dispatcher.processCommand(command,data,userSearch);
                     }
                 }
                 catch(e: any)  {
-                    const users = await this.bot.getUsers();
-                    const userSearch = users.members.find((v: any) => v.id == data.user);
                     this.bot.postMessageToUser(userSearch.name,e.message.toString(),() => {
                         log.error(e.message.toString());
                     });
