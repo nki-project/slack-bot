@@ -4,11 +4,21 @@ export enum DateTimeFormat {
     FORMAT_API = "YYYY-MM-DD HH:mm:ss",
     DATE = "YYYY-MM-DD",
     MONTH_DAY = "M/D",
-    TIME = "hh:mm a",
+    TIME = "HH:mm:ss",
 }
 
 export default class DateTime {
     public dateTime: Date;
+
+    constructor(dateTime: string | Date = new Date(), format?: DateTimeFormat | string, timeZone = "Europe/Kiev") {
+        if (typeof dateTime == 'string') {
+            this.dateTime = moment(dateTime, format ?? DateTimeFormat.FORMAT_API).toDate();
+        } else {
+            this.dateTime =  dateTime;
+        }
+
+        this.dateTime = moment(dateTime).tz(timeZone, true).toDate();
+    }
 
     get moment(): Moment {
         return moment(this.dateTime);
@@ -30,17 +40,24 @@ export default class DateTime {
         return Object.assign(Object.create(this), this);
     }
 
-    constructor(dateTime: string | Date = new Date(), timeZone = "Europe/Kiev", format?: DateTimeFormat | string) {
-        if (typeof dateTime == 'string') {
-            this.dateTime = moment(dateTime, format ?? DateTimeFormat.FORMAT_API).toDate();
-        } else {
-            this.dateTime =  dateTime;
-        }
-
-        this.dateTime = moment(dateTime).tz(timeZone, true).toDate();
-    }
-
     public toString(format?: DateTimeFormat | string): string {
         return format ? moment(this.dateTime).format(format) : moment(this.dateTime).format(DateTimeFormat.FORMAT_API);
+    }
+
+    public intervalTimeTo(date: DateTime, format: string = DateTimeFormat.TIME) {
+        return moment(date.dateTime)
+            .subtract(this.dateTime.getSeconds(), 'seconds')
+            .subtract(this.dateTime.getMinutes(), 'minutes')
+            .subtract(this.dateTime.getHours(), 'hours')
+            .format(format);
+    }
+
+
+    public addTime(date: DateTime, format: string = DateTimeFormat.TIME) {
+        return moment(this.dateTime)
+            .add(date.dateTime.getSeconds(), 'seconds')
+            .add(date.dateTime.getMinutes(), "minutes")
+            .add(date.dateTime.getHours(), 'hours')
+            .format(format);
     }
 }
