@@ -12,6 +12,7 @@ export class StatusTaskController extends Command {
 
     initProperties(args: Array<String>): any {
         this.id = args[0].toString();
+        return this;
     }
 
     async run(data: any) {

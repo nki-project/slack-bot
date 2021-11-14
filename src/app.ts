@@ -8,6 +8,7 @@ import {StopTaskController} from "./controllers/CommandsController/StopTaskContr
 import {StatusTaskController} from "./controllers/CommandsController/StatusTaskController";
 import {log} from "./config/logger";
 import {LiveQuotesController} from "./controllers/CustomsController/LiveQuotesController";
+import {TimeTaskController} from "./controllers/CommandsController/TimeTaskController";
 
 log.info("Init dispatcher!");
 
@@ -23,6 +24,7 @@ dispatcher.register(new CreateTaskController("!create",1, ['string']));
 dispatcher.register(new RemoveTaskController("!del",1,['string']));
 dispatcher.register(new StartTaskController("!start",1,['string']));
 dispatcher.register(new StopTaskController("!stop",1,['string']));
+dispatcher.register(new TimeTaskController("!time",1,['string']));
 dispatcher.register(new StatusTaskController("!status",1,['string']));
 dispatcher.register(new LiveQuotesController("!quotes",0,[]));
 
