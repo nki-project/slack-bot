@@ -10,6 +10,7 @@ import {log} from "./config/logger";
 import {LiveQuotesController} from "./controllers/CustomsController/LiveQuotesController";
 import {InfoController} from "./controllers/CommandsController/InfoController";
 import {TimeTaskController} from "./controllers/CommandsController/TimeTaskController";
+import {AllTasksController} from "./controllers/CommandsController/AllTasksController";
 
 log.info("Init dispatcher!");
 
@@ -29,6 +30,7 @@ dispatcher.register(new TimeTaskController("!time",1,['string']));
 dispatcher.register(new StatusTaskController("!status",1,['string']));
 dispatcher.register(new LiveQuotesController("!quotes",0,[]));
 dispatcher.register(new InfoController("!info",0,[]));
+dispatcher.register(new AllTasksController("!all",0,[]));
 
 main.initBotDispatcher(bot,dispatcher)
 

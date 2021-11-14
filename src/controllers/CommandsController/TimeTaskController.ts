@@ -24,11 +24,8 @@ export class TimeTaskController extends Command {
             }
         });
 
-        const users = await this.bot.getUsers();
-        const userSearch = users.members.find((v: any) => v.id == data.user);
-
         if (!task) {
-            this.bot.postMessageToUser(userSearch.name, `Task with name ${this.id} not found!`);
+            this.bot.postMessageToUser(data["userFullInfo"].name, `Task with name ${this.id} not found!`);
             return;
         }
 
@@ -50,16 +47,15 @@ export class TimeTaskController extends Command {
                     } else {
                         allTimes = new DateTime(allTimes.addTime(new DateTime(times), DateTimeFormat.FORMAT_API));
                     }
-
                 }
             }
 
             if (allTimes != null) {
-                this.bot.postMessageToUser(userSearch.name, `Time spent on a task ${task.title} : ${allTimes.toString(DateTimeFormat.TIME)}`);
+                this.bot.postMessageToUser(data["userFullInfo"].name, `Time spent on a task ${task.title} : ${allTimes.toString(DateTimeFormat.TIME)}`);
                 return;
             }
         } else {
-            this.bot.postMessageToUser(userSearch.name, `Task status not completed!`);
+            this.bot.postMessageToUser(data["userFullInfo"].name, `Task status not completed!`);
             return;
         }
     }
