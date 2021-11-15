@@ -16,6 +16,7 @@ export default class DateTime {
         } else {
             this.dateTime =  dateTime;
         }
+        console.log(moment(dateTime).tz(timeZone));
         this.dateTime = moment.utc().tz(timeZone).toDate();
     }
 
