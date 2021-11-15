@@ -16,8 +16,7 @@ export default class DateTime {
         } else {
             this.dateTime =  dateTime;
         }
-
-        this.dateTime = moment(dateTime).utc().tz(timeZone).toDate();
+        this.dateTime = moment().tz(timeZone).toDate();
     }
 
     get moment(): Moment {
