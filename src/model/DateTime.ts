@@ -8,16 +8,16 @@ export enum DateTimeFormat {
 }
 
 export default class DateTime {
-    public dateTime: Date;
+    public dateTime: Moment;
 
     constructor(dateTime: string | Date = new Date(), format?: DateTimeFormat | string, timeZone = "Europe/Kiev") {
         if (typeof dateTime == 'string') {
-            this.dateTime = moment(dateTime, format ?? DateTimeFormat.FORMAT_API).toDate();
+            this.dateTime = moment(dateTime, format ?? DateTimeFormat.FORMAT_API);
         } else {
-            this.dateTime =  dateTime;
+            this.dateTime =  moment(dateTime);
         }
-        console.log(moment(dateTime).tz(timeZone));
-        this.dateTime = moment.utc().tz(timeZone).toDate();
+
+        this.dateTime = moment(dateTime).tz(timeZone);
     }
 
     get moment(): Moment {
@@ -46,18 +46,18 @@ export default class DateTime {
 
     public intervalTimeTo(date: DateTime, format: string = DateTimeFormat.TIME) {
         return moment(date.dateTime)
-            .subtract(this.dateTime.getSeconds(), 'seconds')
-            .subtract(this.dateTime.getMinutes(), 'minutes')
-            .subtract(this.dateTime.getHours(), 'hours')
+            .subtract(this.dateTime.seconds(), 'seconds')
+            .subtract(this.dateTime.minutes(), 'minutes')
+            .subtract(this.dateTime.hours(), 'hours')
             .format(format);
     }
 
 
     public addTime(date: DateTime, format: string = DateTimeFormat.TIME) {
         return moment(this.dateTime)
-            .add(date.dateTime.getSeconds(), 'seconds')
-            .add(date.dateTime.getMinutes(), "minutes")
-            .add(date.dateTime.getHours(), 'hours')
+            .add(date.dateTime.seconds(), 'seconds')
+            .add(date.dateTime.minutes(), "minutes")
+            .add(date.dateTime.hours(), 'hours')
             .format(format);
     }
 }
