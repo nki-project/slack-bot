@@ -28,7 +28,7 @@ dispatcher.register(new StartTaskController("!start",1,['string']));
 dispatcher.register(new StopTaskController("!stop",1,['string']));
 dispatcher.register(new TimeTaskController("!time",1,['string']));
 dispatcher.register(new StatusTaskController("!status",1,['string']));
-dispatcher.register(new LiveQuotesController("!quotes",0,[]));
+//dispatcher.register(new LiveQuotesController("!quotes",0,[]));
 dispatcher.register(new InfoController("!info",0,[]));
 dispatcher.register(new AllTasksController("!all",0,[]));
 
