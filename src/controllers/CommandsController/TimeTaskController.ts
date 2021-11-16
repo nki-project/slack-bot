@@ -3,6 +3,14 @@ import {Task} from "../../entities/Task";
 import {TaskStates} from "../../entities/TaskStates";
 import DateTime, {DateTimeFormat} from "../../model/DateTime";
 
+enum FLAGS {
+    L = '-l',
+    LAST = '-last',
+    ALL = '-all',
+    NULL = 0,
+    DAY = '-d'
+}
+
 export class TimeTaskController extends Command {
 
     private id: string
@@ -30,11 +38,29 @@ export class TimeTaskController extends Command {
         }
 
         if (task.isStarted && task.isStopped) {
-            const tasksStates: Array<TaskStates> = await this.connection.getRepository(TaskStates).find({
+            let tasksStates: Array<TaskStates> = await this.connection.getRepository(TaskStates).find({
                 where: {
                     task: task
                 }
             });
+
+            let message = '';
+
+            if(this.flags.every(f => f.toLowerCase() == FLAGS.L || f.toLowerCase() == FLAGS.LAST)) {
+                tasksStates = [tasksStates[tasksStates.length-1]];
+                message = 'Time that was last recorded task';
+            }else if(this.flags.every(f => f.toLowerCase() == FLAGS.DAY)) {
+                tasksStates = tasksStates.filter(tS =>
+                    new DateTime(tS.startedAt).dateTime.format(DateTimeFormat.DATE)
+                    == new DateTime().dateTime.format(DateTimeFormat.DATE)
+                );
+                message = 'Time spent today on the task';
+            }else if (this.flags.length == FLAGS.NULL || this.flags.every(f => f.toLowerCase() == FLAGS.ALL)) {
+                message = 'Time spent on a task';
+            }else {
+                this.bot.postMessageToUser(data["userFullInfo"].name, `This command has no such flag '${this.flags[0]}'!`);
+                return;
+            }
 
 
             let allTimes;
@@ -51,7 +77,7 @@ export class TimeTaskController extends Command {
             }
 
             if (allTimes != null) {
-                this.bot.postMessageToUser(data["userFullInfo"].name, `Time spent on a task ${task.title} : ${allTimes.toString(DateTimeFormat.TIME)}`);
+                this.bot.postMessageToUser(data["userFullInfo"].name, `${message} ${task.title} : ${allTimes.toString(DateTimeFormat.TIME)}`);
                 return;
             }
         } else {

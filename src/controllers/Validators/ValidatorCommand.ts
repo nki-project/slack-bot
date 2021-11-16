@@ -5,7 +5,15 @@ export class ValidatorCommand {
 
     static validate(commands: Array<Command>, data: any):any {
         const splitData = data.split(' ');
-        const [nameCommand, ...properties] = splitData;
+        let [nameCommand, ...properties] = splitData;
+        const flags:Array<string> = [];
+        properties = properties.filter((p:string) => {
+            if(p[0] == '-') {
+                flags.push(p);
+                return false;
+            }
+            return true;
+        })
         const [commandSearch] = commands.filter(command => command.name === nameCommand);
         if(!commandSearch) throw new Error("Command not found!");
 
@@ -23,7 +31,7 @@ export class ValidatorCommand {
             throw new Error("Invalid type args!");
         }
 
-        return commandSearch.initProperties(properties);
+        return commandSearch.initProperties(properties).initFlags(flags);
     }
 
 }
