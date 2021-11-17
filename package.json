@@ -26,7 +26,7 @@
   "scripts": {
     "prepare": "tsc",
     "build": "tsc",
-    "start": "ts-node src/app.ts"
+    "start": "node public/build/app.js"
   },
   "keywords": [],
   "author": "",
