@@ -47,7 +47,7 @@ export class TimeTaskController extends Command {
             let message = '';
 
             if(this.flags.every(f => f.toLowerCase() == FLAGS.L || f.toLowerCase() == FLAGS.LAST)) {
-                tasksStates = [tasksStates[tasksStates.length-1]];
+                tasksStates = [tasksStates[tasksStates.length - 1]];
                 message = 'Time that was last recorded task';
             }else if(this.flags.every(f => f.toLowerCase() == FLAGS.DAY)) {
                 tasksStates = tasksStates.filter(tS =>
@@ -66,8 +66,13 @@ export class TimeTaskController extends Command {
             let allTimes;
             for (let taskState of tasksStates) {
                 if (taskState.startedAt.length > 0 && taskState.stoppedAt.length > 0) {
-                    let startDate = new DateTime(taskState.startedAt);
+                    this.bot.postMessageToUser(data["userFullInfo"].name,`Task started (from db) = ${taskState.startedAt}`)
+                    this.bot.postMessageToUser(data["userFullInfo"].name,`Task stopped (from db) = ${taskState.stoppedAt}`);
+                    let startDate : DateTime = new DateTime(taskState.startedAt);
+                    this.bot.postMessageToUser(data["userFullInfo"].name,`Convert startedAt from DB ${startDate.dateTime.format()}`)
                     let times = startDate.intervalTimeTo(new DateTime(taskState.stoppedAt), DateTimeFormat.FORMAT_API);
+                    console.log(`Calculate INTERVAL ${times}`);
+                    this.bot.postMessageToUser(data["userFullInfo"].name,`Calculate interval ${times}`);
                     if (!allTimes) {
                         allTimes = new DateTime(times);
                     } else {
@@ -75,7 +80,6 @@ export class TimeTaskController extends Command {
                     }
                 }
             }
-
             if (allTimes != null) {
                 this.bot.postMessageToUser(data["userFullInfo"].name, `${message} ${task.title} : ${allTimes.toString(DateTimeFormat.TIME)}`);
                 return;
