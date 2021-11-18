@@ -1,6 +1,5 @@
 import {Command} from "../Command";
-import * as fs from "fs";
-import path from "path";
+import {information} from "../../config/info";
 
 export class InfoController extends Command {
 
@@ -13,9 +12,8 @@ export class InfoController extends Command {
     }
 
     async run(data: any) {
-        const info = JSON.parse(fs.readFileSync(path.join(__dirname,"../../config/info.json"),{encoding:"utf-8"}));
-        const formedData = [info["about"],"Команды:"];
-        info["commands"].forEach((com: any) => {
+        const formedData = [information["about"],information["commands"]];
+        information["commands"].forEach((com: any) => {
             formedData.push(com.name + " - " + com.description);
         })
         this.bot.postMessageToUser(data["userFullInfo"].name,formedData.join("\n"));
