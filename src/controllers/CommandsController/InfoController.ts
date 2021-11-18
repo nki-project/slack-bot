@@ -12,7 +12,7 @@ export class InfoController extends Command {
     }
 
     async run(data: any) {
-        const formedData = [information["about"],information["commands"]];
+        const formedData = [information["about"]];
         information["commands"].forEach((com: any) => {
             formedData.push(com.name + " - " + com.description);
         })
