@@ -37,11 +37,18 @@ export class StopTaskController extends Command {
 
         //TODO найти последнюю задачу и поставить последнее время остановки
 
-        const result = await getManager().query("SELECT MAX(id) FROM task_states where taskId = ?",[task.id]);
+        const result = await getManager().query("SELECT * FROM  task_states ORDER BY id desc");
 
+        let lastTask;
+        for(let value of result) {
+            if(value.taskId == task.id) {
+                lastTask = value;
+                break;
+            }
+        }
 
         const taskUpdate: TaskStates = await this.connection.getRepository(TaskStates)
-            .findOne({where:{id:result[0]['MAX(id)'],task:task.id}});
+            .findOne({where:{id:lastTask.id,task:task.id}});
         taskUpdate.stoppedAt = new DateTime().toString();
 
         await this.connection.getRepository(TaskStates).save(taskUpdate);

@@ -1,5 +1,5 @@
 import {TypeMessage} from "../constants/enums";
-import {Connection, ConnectionOptions, createConnection} from "typeorm";
+import {Connection, ConnectionOptions, createConnection, getConnection} from "typeorm";
 import {Task} from "../entities/Task";
 import {ValidatorCommand} from "./Validators/ValidatorCommand";
 import {TaskStates} from "../entities/TaskStates";
@@ -11,7 +11,7 @@ export class MainController {
 
     private bot: any
     private dispatcher : any
-    private connection?: Connection
+    public connection?: Connection
 
     constructor() {
         log.info("Init database");
@@ -43,13 +43,17 @@ export class MainController {
 
     async initDatabase() {
        const options: ConnectionOptions = {
-           type:"sqlite",
-           database:"./db.sqlite",
+           type:"postgres",
+           host:process.env.POST_HOST,
+           port:5432,
+           username:process.env.POST_USER,
+           password:process.env.POST_PASS,
+           database:process.env.POST_DB,
            entities:[Task,TaskStates,Settings],
            logging:true,
-           name:"default",
            synchronize:true
        }
+
        this.connection = await createConnection(options);
     }
 
