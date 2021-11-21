@@ -1,6 +1,5 @@
 import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Task} from "./Task";
-import DateTime from "../model/DateTime";
 
 @Entity()
 export class TaskStates {
@@ -11,7 +10,7 @@ export class TaskStates {
     @ManyToOne(() => Task,task => task.taskStates,{onDelete:"SET NULL"})
     task: Task
 
-    @Column()
+    @Column({nullable:true})
     startedAt: string
 
     @Column({nullable:true})
