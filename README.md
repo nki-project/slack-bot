@@ -45,3 +45,7 @@ Nikita Chopenko and Andrey Kornienko dev. 2021
 
   
 ![Logo](https://i.ibb.co/cC4178B/photo-2021-11-22-21-00-58.jpg)  
+
+## 🛠 Video demonstration (click me)
+
+[![Watch the video](https://d34u8crftukxnk.cloudfront.net/slackpress/prod/sites/6/2019-01_BrandRefresh_Old-to-New-Final.gif)](https://www.youtube.com/watch?v=wxyPVRmYVH8)
