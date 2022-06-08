@@ -40,7 +40,7 @@ export class TimeTaskController extends Command {
         if (task.isStarted && task.isStopped) {
             let tasksStates: Array<TaskStates> = await this.connection.getRepository(TaskStates).find({
                 where: {
-                    task: task
+                    taskId: task.id
                 }
             });
 
@@ -70,9 +70,9 @@ export class TimeTaskController extends Command {
                     let times = startDate.intervalTimeTo(new DateTime(taskState.stoppedAt), DateTimeFormat.FORMAT_API);
                     if (!allTimes) {
                         allTimes = new DateTime(times);
-                    } else {
-                        allTimes = new DateTime(allTimes.addTime(new DateTime(times), DateTimeFormat.FORMAT_API));
+                        continue;
                     }
+                    allTimes = new DateTime(allTimes.addTime(new DateTime(times), DateTimeFormat.FORMAT_API));
                 }
             }
             if (allTimes != null) {

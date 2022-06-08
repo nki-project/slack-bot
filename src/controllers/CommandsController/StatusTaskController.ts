@@ -28,13 +28,14 @@ export class StatusTaskController extends Command {
 
         if(!task.isStarted && !task.isStopped) {
             this.bot.postMessageToUser(data["userFullInfo"].name,`Status: Not started and not paused`);
+            return;
         }
-        else if(task.isStarted && !task.isStopped) {
+        if(task.isStarted && !task.isStopped) {
             this.bot.postMessageToUser(data["userFullInfo"].name,`Status: Task started!`);
             return;
-        } else {
-            this.bot.postMessageToUser(data["userFullInfo"].name,`Status: Task stopped!`);
         }
+
+        this.bot.postMessageToUser(data["userFullInfo"].name,`Status: Task stopped!`);
     }
 
 }
